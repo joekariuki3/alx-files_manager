@@ -1,6 +1,6 @@
 # File manager
 ## stack used
--Back-end
+- Back-end
 -- JavaScript ES6
 -- NoSQL MongoDB
 -- Redis
