@@ -4,7 +4,6 @@ import redis from 'redis';
 class RedisClient {
   constructor() {
     this.client = redis.createClient();
-    this.client.on('connect', () => {});
     this.client.on('error', (error) => {
       console.log(error);
     });
@@ -58,4 +57,4 @@ class RedisClient {
 // instance of RedisClient
 const redisClient = new RedisClient();
 // export the created instance
-module.exports = redisClient;
+export default redisClient;
