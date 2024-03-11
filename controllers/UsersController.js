@@ -2,13 +2,13 @@ import sha1 from 'sha1';
 import dbClient from '../utils/db';
 
 class UsersController {
-  static async postNew(request, response) {
-    const { email, password } = request.body;
+  static async postNew(req, res) {
+    const { email, password } = req.body;
     if (!email) {
-      response.status(400).json({ error: 'Missing email' });
+      res.status(400).json({ error: 'Missing email' });
     }
     if (!password) {
-      response.status(400).json({ error: 'Missing password' });
+      res.status(400).json({ error: 'Missing password' });
     }
 
     const hashPwd = sha1(password);
