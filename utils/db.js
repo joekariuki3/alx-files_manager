@@ -49,6 +49,12 @@ class DBClient {
       return 0;
     }
   }
+	async getUser(query) {
+		console.log('QUERY IN DB.JS', query);
+		const user = await this.db.collection('users').findOne(query);
+		console.log('GET USER IN DB.JS', user);
+		return user;
+  }
 }
 
 const dbClient = new DBClient();
