@@ -1,9 +1,9 @@
-const redisClient = require('../redis-client');
-const db = require('../db-client');
+const redisClient = require('../utils/redis');
+const db = require('../utils/db');
 
 const getStatus = (req, res) => {
-  const redisStatus = redisClient.connected ? true : false;
-  const dbStatus = db.db.serverConfig.isConnected() ? true : false;
+  const redisStatus = !!redisClient.connected;
+  const dbStatus = !!db.db.serverConfig.isConnected();
 
   const status = {
     redis: redisStatus,
