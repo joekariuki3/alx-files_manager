@@ -21,8 +21,8 @@ class AppController {
       const usersCount = await dbClient.nbUsers();
       const filesCount = await dbClient.nbFiles();
       const stats = {
-        usersCount,
-        filesCount,
+        users: usersCount,
+        files: filesCount,
       };
       res.status(200).json(stats);
     } catch (err) {
