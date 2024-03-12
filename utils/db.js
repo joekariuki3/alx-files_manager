@@ -18,8 +18,8 @@ class DBClient {
       // connect to our db
       this.db = client.db(database);
       // create users and files collections
-      this.db.createCollection('users');
-      this.db.createCollection('files');
+      this.users = this.db.collection('users');
+      this.files = this.db.collection('files');
     });
   }
 
@@ -30,7 +30,7 @@ class DBClient {
 
   async nbUsers() {
     try {
-      const collection = this.db.collection('users');
+      const collection = this.users;
       const count = await collection.countDocuments();
       return count;
     } catch (error) {
@@ -41,7 +41,7 @@ class DBClient {
 
   async nbFiles() {
     try {
-      const collection = this.db.collection('files');
+      const collection = this.files;
       const count = await collection.countDocuments();
       return count;
     } catch (error) {
@@ -49,11 +49,10 @@ class DBClient {
       return 0;
     }
   }
-	async getUser(query) {
-		console.log('QUERY IN DB.JS', query);
-		const user = await this.db.collection('users').findOne(query);
-		console.log('GET USER IN DB.JS', user);
-		return user;
+
+  async getUser(query) {
+    const user = await this.db.collection('users').findOne(query);
+    return user;
   }
 }
 
