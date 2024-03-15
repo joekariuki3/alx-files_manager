@@ -2,10 +2,16 @@ import sha1 from 'sha1';
 import { ObjectId } from 'mongodb';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
+import { createBullBoard, BullAdapter } from 'bull-board';
+import Queue from 'bull/lib/queue';
+
+const userQueue = new Queue('email sending');
 
 class UsersController {
   static async postNew(req, res) {
-    const { email, password } = req.body;
+    const email = req.body ? req.body.email : null;
+    const password = req.body ? req.body.password : null;
+    
     if (!email) {
       res.status(400).json({ error: 'Missing email' });
     }
