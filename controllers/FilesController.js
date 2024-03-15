@@ -17,7 +17,6 @@ class FilesController {
     const userId = await findUserIdByToken(request);
     if (!userId) return response.status(401).json({ error: 'Unauthorized' });
 
-
     // Validate the request data
     const { name } = request.body;
     if (!name) return response.status(400).json({ error: 'Missing name' });
@@ -37,7 +36,7 @@ class FilesController {
     }
 
     let fileInserted;
-    
+
     // if no data, and not a folder, error
     if (!data && type !== 'folder') return response.status(400).json({ error: 'Missing Data' });
 
@@ -103,22 +102,10 @@ class FilesController {
     if (!user) { return response.status(401).json({ error: 'Unauthorized' }); }
 
     const idFile = request.params.id || '';
-    const fileDocument = await dbClient.db.collection('files').findOne({ _id: ObjectID(idFile), userId: user._id });
+    const fileDocument = await dbClient.db
+      .collection('files')
+      .findOne({ _id: ObjectID(idFile), userId: user._id });
     if (!fileDocument) return response.status(404).send({ error: 'Not found' });
-
-    const size = parseInt(request.query.size) || 0;
-    const filePath = path.join(process.env.FOLDER_PATH, fileDocument.localPath);
-    const thumbnailPath = size > 0 ? `${filePath}_${size}` : filePath;
-
-    if (!fs.existsSync(thumbnailPath)) {
-       return response.status(404).send({ error: 'Not found' });
-    }
-
-    const fileData = fs.readFileSync(thumbnailPath);
-    const mimeType = mime.lookup(filePath);
-
-    res.setHeader('Content-Type', mimeType);
-    res.send(fileData);
 
     return response.send({
       id: fileDocument._id,
@@ -166,7 +153,7 @@ class FilesController {
     });
     return response.send(filesArray);
   }
-  
+
   static async putPublish(request, response) {
     const userId = await findUserIdByToken(request);
     // const { userId } = await getIdAndKey(request);
