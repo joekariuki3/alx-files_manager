@@ -1,9 +1,9 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require("mongodb");
 
 // get data from environment variable if they are set
-const host = process.env.DB_HOST || 'localhost';
+const host = process.env.DB_HOST || "localhost";
 const port = process.env.DB_PORT || 27017;
-const database = process.env.DB_DATABASE || 'files_manager';
+const database = process.env.DB_DATABASE || "files_manager";
 const url = `mongodb://${host}:${port}/`;
 
 class DBClient {
@@ -18,8 +18,8 @@ class DBClient {
       // connect to our db
       this.db = client.db(database);
       // create users and files collections
-      this.users = this.db.collection('users');
-      this.files = this.db.collection('files');
+      this.users = this.db.collection("users");
+      this.files = this.db.collection("files");
     });
   }
 
@@ -34,7 +34,7 @@ class DBClient {
       const count = await collection.countDocuments();
       return count;
     } catch (error) {
-      console.error('Error counting users:', error);
+      console.error("Error counting users:", error);
       return 0;
     }
   }
@@ -45,14 +45,26 @@ class DBClient {
       const count = await collection.countDocuments();
       return count;
     } catch (error) {
-      console.error('Error counting files:', error);
+      console.error("Error counting files:", error);
       return 0;
     }
   }
 
+  // get all files
+  async getFiles() {
+    const files = await this.db.collection("files").find().toArray();
+    return files;
+  }
+
   async getUser(query) {
-    const user = await this.db.collection('users').findOne(query);
+    const user = await this.db.collection("users").findOne(query);
     return user;
+  }
+
+  // get all users
+  async getUsers() {
+    const users = await this.db.collection("users").find().toArray();
+    return users;
   }
 }
 

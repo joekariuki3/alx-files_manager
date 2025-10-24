@@ -1,10 +1,10 @@
 // Redis class implementation
-import redis from 'redis';
+import redis from "redis";
 
 class RedisClient {
   constructor() {
     this.client = redis.createClient();
-    this.client.on('error', (error) => {
+    this.client.on("error", (error) => {
       console.log(error);
     });
   }
@@ -30,7 +30,7 @@ class RedisClient {
   // sets a expiry duration of a value set for key
   async set(key, value, duration) {
     return new Promise((resolve, reject) => {
-      this.client.set(key, value, 'EX', duration, (error, reply) => {
+      this.client.set(key, value, "EX", duration, (error, reply) => {
         if (error) {
           reject(error);
           return;
